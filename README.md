@@ -47,9 +47,14 @@ emulador/simulador.
   `/api/usuarios/dispositivos/registrar/`. El backend avisa automáticamente
   por push cuando se genera un boletín nuevo (al estudiante y a sus
   tutores). Usa el servicio de push de **Expo** (no Firebase/APNs
-  directo), así que funciona en Expo Go sin configurar nada adicional.
-  Si el dispositivo no tiene permiso o no hay red, falla en silencio
-  (`console.warn`) y la app sigue funcionando igual.
+  directo) — pero **ojo**: desde el SDK 53, Expo Go ya no entrega
+  notificaciones push remotas (solo quedó soportado en un *development
+  build*). Login/Notas/Asistencia siguen funcionando normal en Expo Go;
+  solo la entrega real del push necesita un development build (`eas
+  build --profile development`, o build local con `expo-dev-client`).
+  Si falla el registro (sin permiso, sin red, o corriendo en Expo Go sin
+  development build), queda en `console.warn` y la app sigue
+  funcionando igual.
 
 ## Roadmap
 
@@ -61,8 +66,10 @@ emulador/simulador.
 3. **Fase 2 (hecho)**: "Notas y boletines" y "Asistencia" conectadas a datos
    reales.
 4. **Fase 3 (hecho)**: notificaciones push vía el servicio de Expo, disparadas
-   al generar un boletín. **Importante**: esto funciona en Expo Go, pero un
-   build standalone con EAS para Android eventualmente va a necesitar un
-   proyecto de Firebase propio (`google-services.json`) para que la entrega
-   de push funcione fuera de Expo Go — no es necesario todavía.
+   al generar un boletín. **Importante**: desde el SDK 53 de Expo, la
+   entrega real de push remoto ya NO funciona en Expo Go — hace falta un
+   *development build* (`eas build --profile development`) para probarlo
+   de verdad. Un build standalone para producción (Android) además va a
+   necesitar más adelante un proyecto de Firebase propio
+   (`google-services.json`).
 5. **Fase 4**: ícono/splash y build de prueba con EAS.
