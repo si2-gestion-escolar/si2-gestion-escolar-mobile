@@ -28,35 +28,30 @@ npm run start
 Escanea el QR con Expo Go, o presiona `a`/`i` en la terminal para abrir en un
 emulador/simulador.
 
-## Estado actual (esqueleto)
+## Estado actual
 
 - Login contra `/usuarios/login/` (JWT) con refresco automático de token,
   reutilizando el mismo flujo que `frontend/src/api`, adaptado a
   `expo-secure-store` (almacenamiento async en vez de `sessionStorage`).
-- Navegación: `Login` → `Home` → `Notas` / `Asistencia` (estas dos últimas
-  son pantallas placeholder, todavía no llaman a ningún endpoint).
+- Navegación: `Login` → `Home` → `Notas` / `Asistencia`.
+- **Notas**: consume `GET /api/estudiantes/mis-resultados/`. Si el usuario es
+  tutor con varios hijos y no se especifica cuál, el backend responde 400 con
+  la lista de hijos; la pantalla la usa para mostrar un selector.
+- **Asistencia**: consume `GET /api/asistencia/detalles/resumen/`, que ya
+  devuelve una fila por cada hijo a cargo del tutor (o la propia del
+  estudiante) sin necesidad de elegir.
 - Sin pantallas de gestión/administración — eso se queda en `frontend` (web).
-
-## Por qué "Notas" y "Asistencia" no muestran datos todavía
-
-El backend actual no permite que un tutor o estudiante lea sus propias notas,
-boletines o asistencia:
-
-- `documentos-academicos` (boletines) y los resultados de HU-16/17 solo son
-  accesibles para profesor/admin/superadmin.
-- HU-13 (Asistencia) solo tiene los modelos de base de datos
-  (`SesionClase`, `AsistenciaEstudiante`); no tiene serializers/views/urls.
-
-Ese trabajo de backend (Fase 0 del plan) tiene que hacerse antes de conectar
-estas pantallas a datos reales.
 
 ## Roadmap
 
-1. **Fase 0 (backend)**: permisos de autoservicio para tutor/estudiante +
-   endpoint JSON de resultados + API de HU-13 + registro de dispositivo para
-   notificaciones.
+1. **Fase 0 (backend, hecho)**: permisos de autoservicio para tutor/estudiante
+   sobre boletines, endpoint JSON de resultados (`mis-resultados`), y cierre
+   de un hueco de seguridad real en la API de asistencia (HU-13) que no
+   filtraba por pertenencia.
 2. **Fase 1 (hecho)**: esqueleto de la app — auth, navegación, pantallas base.
-3. **Fase 2**: conectar "Notas y boletines" y "Asistencia" a datos reales.
+3. **Fase 2 (hecho)**: "Notas y boletines" y "Asistencia" conectadas a datos
+   reales.
 4. **Fase 3**: notificaciones push (Firebase Cloud Messaging vía
-   `expo-notifications`).
+   `expo-notifications`) — no existe ninguna infraestructura de esto en el
+   backend todavía, hay que construirla desde cero.
 5. **Fase 4**: ícono/splash y build de prueba con EAS.
