@@ -42,6 +42,15 @@ emulador/simulador.
   estudiante) sin necesidad de elegir.
 - Sin pantallas de gestión/administración — eso se queda en `frontend` (web).
 
+- **Notificaciones push**: al iniciar sesión (o restaurar sesión), la app
+  pide permiso y registra el token del dispositivo contra
+  `/api/usuarios/dispositivos/registrar/`. El backend avisa automáticamente
+  por push cuando se genera un boletín nuevo (al estudiante y a sus
+  tutores). Usa el servicio de push de **Expo** (no Firebase/APNs
+  directo), así que funciona en Expo Go sin configurar nada adicional.
+  Si el dispositivo no tiene permiso o no hay red, falla en silencio
+  (`console.warn`) y la app sigue funcionando igual.
+
 ## Roadmap
 
 1. **Fase 0 (backend, hecho)**: permisos de autoservicio para tutor/estudiante
@@ -51,7 +60,9 @@ emulador/simulador.
 2. **Fase 1 (hecho)**: esqueleto de la app — auth, navegación, pantallas base.
 3. **Fase 2 (hecho)**: "Notas y boletines" y "Asistencia" conectadas a datos
    reales.
-4. **Fase 3**: notificaciones push (Firebase Cloud Messaging vía
-   `expo-notifications`) — no existe ninguna infraestructura de esto en el
-   backend todavía, hay que construirla desde cero.
+4. **Fase 3 (hecho)**: notificaciones push vía el servicio de Expo, disparadas
+   al generar un boletín. **Importante**: esto funciona en Expo Go, pero un
+   build standalone con EAS para Android eventualmente va a necesitar un
+   proyecto de Firebase propio (`google-services.json`) para que la entrega
+   de push funcione fuera de Expo Go — no es necesario todavía.
 5. **Fase 4**: ícono/splash y build de prueba con EAS.
