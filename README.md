@@ -56,6 +56,34 @@ emulador/simulador.
   development build), queda en `console.warn` y la app sigue
   funcionando igual.
 
+- **Ícono y splash**: gorro de graduación simple sobre el azul de la marca
+  (`#1d4ed8`), generado en `scripts/generar_assets.mjs` — no había ningún
+  logo existente en el proyecto para reutilizar (solo el nombre "EduGestión
+  Cloud" en `frontend/src/app/config/branding.ts`). Si luego hay un logo de
+  verdad, basta con reemplazar los PNG en `assets/` (o editar el script y
+  volver a correrlo con `node scripts/generar_assets.mjs`).
+
+## Generar un build de prueba con EAS
+
+Esto todavía no se hizo — necesita una cuenta de Expo (gratis) que yo no
+tengo. Pasos para quien sí la tenga:
+
+```powershell
+npm install -g eas-cli
+eas login
+eas build:configure
+eas build --profile development --platform android
+```
+
+El perfil `development` (ya definido en `eas.json`) genera un *development
+build* instalable como APK — es el que hace falta para probar las
+notificaciones push de verdad (Expo Go ya no las entrega, ver abajo).
+`preview` genera un APK para compartir sin cuenta de desarrollador; antes de
+un build `production` para las tiendas hace falta revisar `bundleIdentifier`/
+`package` en `app.json` (hoy tienen un valor provisional
+`com.si2gestionescolar.mobile`) y, para Android, un proyecto de Firebase
+propio.
+
 ## Roadmap
 
 1. **Fase 0 (backend, hecho)**: permisos de autoservicio para tutor/estudiante
@@ -72,4 +100,5 @@ emulador/simulador.
    de verdad. Un build standalone para producción (Android) además va a
    necesitar más adelante un proyecto de Firebase propio
    (`google-services.json`).
-5. **Fase 4**: ícono/splash y build de prueba con EAS.
+5. **Fase 4 (hecho el ícono/splash; el build de EAS queda pendiente de que
+   alguien lo corra con su propia cuenta de Expo)**.
