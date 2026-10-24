@@ -24,9 +24,9 @@ const plataformaActual = (): PlataformaDispositivo => {
 export async function registrarParaNotificacionesPush() {
   try {
     if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
+      await Notifications.setNotificationChannelAsync('default-v2', {
         name: 'General',
-        importance: Notifications.AndroidImportance.DEFAULT,
+        importance: Notifications.AndroidImportance.HIGH,
       })
     }
 
