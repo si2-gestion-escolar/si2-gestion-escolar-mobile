@@ -36,6 +36,12 @@
           "backgroundColor": "#ffffff"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "08c4969d-1797-451b-b212-e4888f5ad303"
+      }
+    },
+    "owner": "heidajaz"
   }
 }
