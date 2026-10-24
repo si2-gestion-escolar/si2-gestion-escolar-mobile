@@ -13,6 +13,7 @@
     },
     "android": {
       "package": "com.si2gestionescolar.mobile",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#1d4ed8",
         "foregroundImage": "./assets/android-icon-foreground.png",
