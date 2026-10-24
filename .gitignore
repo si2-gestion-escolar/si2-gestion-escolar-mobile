@@ -34,6 +34,12 @@ yarn-error.*
 .env
 .env*.local
 
+# credenciales de Firebase (nunca se suben al repo)
+google-services.json
+GoogleService-Info.plist
+*firebase*service-account*.json
+*-firebase-adminsdk-*.json
+
 # typescript
 *.tsbuildinfo
 
