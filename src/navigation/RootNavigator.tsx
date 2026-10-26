@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { ActivityIndicator, View } from 'react-native'
 import { useAuth } from '../context/AuthContext'
 import AsistenciaScreen from '../screens/AsistenciaScreen'
+import BoletinesScreen from '../screens/BoletinesScreen'
 import HomeScreen from '../screens/HomeScreen'
 import LoginScreen from '../screens/LoginScreen'
 import NotasScreen from '../screens/NotasScreen'
@@ -11,6 +12,7 @@ export type RootStackParamList = {
   Login: undefined
   Home: undefined
   Notas: undefined
+  Boletines: undefined
   Asistencia: undefined
 }
 
@@ -33,7 +35,8 @@ export default function RootNavigator() {
         {user ? (
           <>
             <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Inicio' }} />
-            <Stack.Screen name="Notas" component={NotasScreen} options={{ title: 'Notas y boletines' }} />
+            <Stack.Screen name="Notas" component={NotasScreen} options={{ title: 'Notas' }} />
+            <Stack.Screen name="Boletines" component={BoletinesScreen} options={{ title: 'Boletines' }} />
             <Stack.Screen name="Asistencia" component={AsistenciaScreen} options={{ title: 'Asistencia' }} />
           </>
         ) : (
