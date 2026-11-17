@@ -1,6 +1,9 @@
+import * as Notifications from 'expo-notifications'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import axiosInstance, { authAxios } from '../api/axiosInstance'
 import { clearSession, getAccessToken, saveSession, type Usuario } from '../api/auth'
+import { desregistrarDispositivo } from '../api/notificaciones'
+import { registrarParaNotificacionesPush } from '../notifications/pushNotifications'
 
 interface LoginResponse { access: string; refresh: string; user: Usuario }
 
@@ -33,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const { data } = await axiosInstance.get<Usuario>('/usuarios/perfil/')
         if (activo) setUser(data)
+        void registrarParaNotificacionesPush()
       } catch {
         await clearSession()
         if (activo) setUser(null)
@@ -51,10 +55,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data } = await authAxios.post<LoginResponse>('/usuarios/login/', credenciales)
     await saveSession(data)
     setUser(data.user)
+    void registrarParaNotificacionesPush()
     return data.user
   }
 
   const logout = async () => {
+    try {
+      const { data: token } = await Notifications.getExpoPushTokenAsync()
+      await desregistrarDispositivo(token)
+    } catch {
+      // Sin permiso o sin token registrado: no hay nada que desregistrar.
+    }
     await clearSession()
     setUser(null)
   }

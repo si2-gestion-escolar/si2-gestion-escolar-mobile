@@ -3,7 +3,7 @@ import { clearSession, getAccessToken, getRefreshToken, updateTokens } from './a
 
 // Ver .env.example: el valor correcto depende de donde corra la app
 // (emulador Android, simulador iOS o celular fisico con Expo Go).
-const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://10.0.2.2:8000/api'
+export const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://10.0.2.2:8000/api'
 
 const apiConfig = {
   baseURL: apiBaseUrl,

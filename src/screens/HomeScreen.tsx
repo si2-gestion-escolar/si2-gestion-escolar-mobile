@@ -13,7 +13,10 @@ export default function HomeScreen({ navigation }: Props) {
       <Text style={estilos.saludo}>Hola, {user?.nombre ?? 'usuario'}</Text>
 
       <Pressable style={estilos.opcion} onPress={() => navigation.navigate('Notas')}>
-        <Text style={estilos.opcionTexto}>Notas y boletines</Text>
+        <Text style={estilos.opcionTexto}>Notas</Text>
+      </Pressable>
+      <Pressable style={estilos.opcion} onPress={() => navigation.navigate('Boletines')}>
+        <Text style={estilos.opcionTexto}>Boletines</Text>
       </Pressable>
       <Pressable style={estilos.opcion} onPress={() => navigation.navigate('Asistencia')}>
         <Text style={estilos.opcionTexto}>Asistencia</Text>
