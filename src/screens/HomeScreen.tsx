@@ -21,6 +21,9 @@ export default function HomeScreen({ navigation }: Props) {
       <Pressable style={estilos.opcion} onPress={() => navigation.navigate('Asistencia')}>
         <Text style={estilos.opcionTexto}>Asistencia</Text>
       </Pressable>
+      <Pressable style={estilos.opcion} onPress={() => navigation.navigate('Pagos')}>
+        <Text style={estilos.opcionTexto}>Pensiones y pagos</Text>
+      </Pressable>
 
       <Pressable style={estilos.salir} onPress={() => void logout()}>
         <Text style={estilos.salirTexto}>Cerrar sesión</Text>
