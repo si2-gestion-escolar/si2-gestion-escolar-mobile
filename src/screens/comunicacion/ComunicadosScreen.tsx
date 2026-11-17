@@ -54,7 +54,7 @@ export function ComunicadoDetalleScreen({ route }: NativeStackScreenProps<RootSt
       <Text style={estilos.cuerpo}>{dato.cuerpo}</Text>
       {dato.estado === 'ARCHIVADO' && <Text style={estilos.secundario}>Comunicado archivado</Text>}
       {dato.leido_at ? <Text style={estilos.leido}>Lectura confirmada: {fecha(dato.leido_at)}</Text>
-        : dato.estado === 'PUBLICADO' && <>
+        : dato.es_destinatario && dato.estado === 'PUBLICADO' && <>
           <Text style={estilos.texto}>{dato.requiere_confirmacion ? 'Se requiere su confirmación de lectura.' : 'Puede confirmar que leyó este comunicado.'}</Text>
           <Boton titulo={guardando ? 'Confirmando…' : 'Confirmar que leí el comunicado'} disabled={guardando} onPress={() => void confirmar()} />
         </>}

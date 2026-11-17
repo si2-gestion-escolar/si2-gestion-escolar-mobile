@@ -12,7 +12,7 @@ export interface Comunicado {
   id: number; titulo: string; cuerpo: string; unidad_educativa: number; curso: number | null
   prioridad: 'NORMAL' | 'URGENTE'; requiere_confirmacion: boolean
   estado: 'BORRADOR' | 'PUBLICADO' | 'ARCHIVADO'; created_at: string; publicado_at: string | null
-  leido_at: string | null; puede_gestionar: boolean
+  leido_at: string | null; puede_gestionar: boolean; es_destinatario: boolean
   estadisticas: null | { destinatarios: number; leidos: number; porcentaje_lectura: number }
 }
 export interface Notificacion {
