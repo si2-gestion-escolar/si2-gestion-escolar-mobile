@@ -34,6 +34,12 @@ emulador/simulador.
   reutilizando el mismo flujo que `frontend/src/api`, adaptado a
   `expo-secure-store` (almacenamiento async en vez de `sessionStorage`).
 - Navegación: `Login` → `Home` → `Notas` / `Boletines` / `Asistencia`.
+- **HU27/HU28**: desde Inicio se accede a Comunicados, Alertas y Preferencias.
+  Los listados admiten paginación, sincronización manual y gesto para refrescar.
+  La bandeja permite filtrar categoría y avisos sin leer; Inicio y la bandeja
+  consultan el total sin leer al recuperar el foco. Cada comunicado tiene
+  detalle protegido y botón explícito para confirmar lectura. Leer una alerta
+  no confirma el comunicado asociado. No se realiza gestión administrativa móvil.
 - **Notas**: consume `GET /api/estudiantes/mis-resultados/` (desglose de
   calificaciones en texto). Si el usuario es tutor con varios hijos y no se
   especifica cuál, el backend responde 400 con la lista de hijos; la
@@ -74,6 +80,55 @@ emulador/simulador.
   Cloud" en `frontend/src/app/config/branding.ts`). Si luego hay un logo de
   verdad, basta con reemplazar los PNG en `assets/` (o editar el script y
   volver a correrlo con `node scripts/generar_assets.mjs`).
+
+## API de comunicación y verificación local
+
+Se reutilizan Axios con JWT, renovación y SecureStore. Con base `/api`, la app usa:
+
+| Operación | Ruta |
+| --- | --- |
+| Listar comunicados, página de 20 | `GET /comunicacion/comunicados/?page=N` |
+| Obtener detalle autenticado | `GET /comunicacion/comunicados/{id}/` |
+| Confirmar lectura expresamente | `POST /comunicacion/comunicados/{id}/leer/` |
+| Bandeja paginada y filtros opcionales | `GET /comunicacion/notificaciones/?page=N&no_leidas=true&tipo=FALTA` |
+| Detalle de alerta | `GET /comunicacion/notificaciones/{id}/` |
+| Marcar alerta como leída | `POST /comunicacion/notificaciones/{id}/leer/` |
+| Total sin leer | `GET /comunicacion/notificaciones/resumen/` |
+| Consultar y cambiar preferencias por categoría | `GET/PATCH /comunicacion/preferencias/` |
+
+Las preferencias controlan push; desactivarlas conserva la bandeja. La categoría
+PAGO recibe alertas emitidas desde el servicio administrativo autorizado del
+backend; esta app no implementa cobros ni tesorería.
+
+Al tocar un push se aceptan únicamente referencias enteras positivas
+`notificacion_id` o `comunicado_id` (también `comunicado` por compatibilidad).
+Si existen ambas, se abre la alerta y desde ella su comunicado. Se espera a que
+la sesión y el navegador estén listos, tanto al arrancar desde una notificación
+como al tocarla con la app abierta. El contenido se vuelve a solicitar a la API
+autenticada; nunca se presenta texto privado ni se abren URLs del payload.
+Los errores de acceso/red ofrecen sincronización manual. El botón de permisos
+en Preferencias permite reintentar el registro del dispositivo; si el sistema
+denegó permisos, indica que deben habilitarse desde sus ajustes.
+
+```powershell
+npm ci
+npm test
+npm run typecheck
+npm run lint
+```
+
+Las pruebas usan Node, TypeScript y Axios ya instalados, con transporte HTTP
+controlado y sin push real. Cubren rutas, filtros, métodos de lectura,
+preferencias, propagación de errores y validación de referencias push.
+ESLint y su configuración Expo son herramientas de desarrollo, sin cambios
+a dependencias nativas ni a la configuración de builds.
+
+Pendiente de verificación en dispositivo: login/restauración con cuentas de
+tutor y estudiante, permisos concedidos/denegados, push en frío y en segundo
+plano, cambio de cuenta, actualización del total tras confirmar lectura, filtros,
+reintento sin conexión y paginación con más de veinte avisos. La entrega remota
+exige el development build y credenciales EAS/FCM/APNs del proyecto; no se
+generaron ni publicaron builds como parte de HU27/HU28.
 
 ## Generar un build de prueba con EAS
 

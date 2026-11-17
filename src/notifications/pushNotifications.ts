@@ -1,11 +1,10 @@
 import * as Notifications from 'expo-notifications'
+import { AndroidImportance } from 'expo-notifications'
 import { Platform } from 'react-native'
 import { registrarDispositivo, type PlataformaDispositivo } from '../api/notificaciones'
 
-// Como se usa el servicio de push de Expo (ver backend/notificaciones.py),
-// no hace falta configurar Firebase/APNs propios mientras se pruebe con
-// Expo Go. Para un build standalone con EAS sí se necesitarán esas
-// credenciales más adelante (Fase 4).
+// El push remoto requiere un development build con credenciales FCM/APNs.
+// La bandeja HTTP funciona también sin permisos o cuando el registro falla.
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowBanner: true,
@@ -23,26 +22,29 @@ const plataformaActual = (): PlataformaDispositivo => {
 
 export async function registrarParaNotificacionesPush() {
   try {
+    if (Platform.OS === 'web') return 'no_disponible' as const
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default-v2', {
         name: 'General',
-        importance: Notifications.AndroidImportance.HIGH,
+        importance: AndroidImportance.HIGH,
       })
     }
 
     const permisoActual = await Notifications.getPermissionsAsync()
     let estado = permisoActual.status
-    if (estado !== 'granted') {
+    if (estado !== 'granted' && permisoActual.canAskAgain) {
       const solicitado = await Notifications.requestPermissionsAsync()
       estado = solicitado.status
     }
-    if (estado !== 'granted') return
+    if (estado !== 'granted') return 'denegado' as const
 
     const { data: token } = await Notifications.getExpoPushTokenAsync()
     await registrarDispositivo(token, plataformaActual())
-  } catch (error) {
+    return 'registrado' as const
+  } catch {
     // No es critico: sin permiso, sin red, o sin proyecto EAS configurado
     // todavia, la app debe seguir funcionando igual sin notificaciones.
-    console.warn('No fue posible registrar el dispositivo para notificaciones push.', error)
+    console.warn('No fue posible registrar el dispositivo para notificaciones push.')
+    return 'error' as const
   }
 }
