@@ -18,6 +18,11 @@ export default function HomeScreen({ navigation }: Props) {
       <Pressable style={estilos.opcion} onPress={() => navigation.navigate('Asistencia')}>
         <Text style={estilos.opcionTexto}>Asistencia</Text>
       </Pressable>
+      {['tutor', 'estudiante'].includes(user?.rol?.nombre?.toLowerCase() ?? '') && (
+        <Pressable style={estilos.opcion} onPress={() => navigation.navigate('Comunicaciones')}>
+          <Text style={estilos.opcionTexto}>Comunicados institucionales</Text>
+        </Pressable>
+      )}
 
       <Pressable style={estilos.salir} onPress={() => void logout()}>
         <Text style={estilos.salirTexto}>Cerrar sesión</Text>
