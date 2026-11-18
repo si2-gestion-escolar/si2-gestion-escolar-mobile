@@ -7,6 +7,7 @@ import BoletinesScreen from '../screens/BoletinesScreen'
 import HomeScreen from '../screens/HomeScreen'
 import LoginScreen from '../screens/LoginScreen'
 import NotasScreen from '../screens/NotasScreen'
+import ComunicacionesScreen from '../screens/ComunicacionesScreen'
 
 export type RootStackParamList = {
   Login: undefined
@@ -14,6 +15,7 @@ export type RootStackParamList = {
   Notas: undefined
   Boletines: undefined
   Asistencia: undefined
+  Comunicaciones: undefined
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -38,6 +40,7 @@ export default function RootNavigator() {
             <Stack.Screen name="Notas" component={NotasScreen} options={{ title: 'Notas' }} />
             <Stack.Screen name="Boletines" component={BoletinesScreen} options={{ title: 'Boletines' }} />
             <Stack.Screen name="Asistencia" component={AsistenciaScreen} options={{ title: 'Asistencia' }} />
+            <Stack.Screen name="Comunicaciones" component={ComunicacionesScreen} options={{ title: 'Comunicados' }} />
           </>
         ) : (
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
