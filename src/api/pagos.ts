@@ -37,3 +37,27 @@ export const verificarQR = (id: number) =>
   axiosInstance.post<SolicitudQR>(`/finanzas/solicitudes-qr/${id}/verificar/`)
 
 export const formatoMonto = (valor: string | number) => `Bs ${Number(valor).toFixed(2)}`
+
+// HU-28: bandeja de avisos de pago (pagos, becas y recordatorios de cuotas).
+export interface AvisoPago {
+  id: number
+  tipo: string
+  titulo: string
+  mensaje: string
+  leida: boolean
+  fecha: string
+}
+
+export const listarAvisosPago = async () => {
+  const { data } = await axiosInstance.get<{ results: AvisoPago[] }>('/finanzas/avisos/', { params: { page_size: 50 } })
+  return data.results
+}
+
+export const contarAvisosPagoSinLeer = async () => {
+  const { data } = await axiosInstance.get<{ no_leidas: number }>('/finanzas/avisos/resumen/')
+  return data.no_leidas
+}
+
+export const leerAvisoPago = (id: number) => axiosInstance.post<AvisoPago>(`/finanzas/avisos/${id}/leer/`)
+
+export const leerTodosLosAvisosPago = () => axiosInstance.post('/finanzas/avisos/leer-todas/')
