@@ -6,10 +6,12 @@ import { ActivityIndicator, Platform, View } from 'react-native'
 import { useAuth } from '../context/AuthContext'
 import { destinoDesdePush, type DestinoPush } from '../notifications/communicationRouting'
 import AsistenciaScreen from '../screens/AsistenciaScreen'
+import AvisosPagoScreen from '../screens/AvisosPagoScreen'
 import BoletinesScreen from '../screens/BoletinesScreen'
 import HomeScreen from '../screens/HomeScreen'
 import LoginScreen from '../screens/LoginScreen'
 import NotasScreen from '../screens/NotasScreen'
+import PagosScreen from '../screens/PagosScreen'
 import { ComunicadosScreen, ComunicadoDetalleScreen } from '../screens/comunicacion/ComunicadosScreen'
 import { NotificacionesScreen, NotificacionDetalleScreen } from '../screens/comunicacion/NotificacionesScreen'
 import PreferenciasScreen from '../screens/comunicacion/PreferenciasScreen'
@@ -20,6 +22,8 @@ export type RootStackParamList = {
   Notas: undefined
   Boletines: undefined
   Asistencia: undefined
+  Pagos: undefined
+  AvisosPago: undefined
   Comunicados: undefined
   ComunicadoDetalle: { id: number }
   Notificaciones: undefined
@@ -85,6 +89,8 @@ export default function RootNavigator() {
             <Stack.Screen name="Notas" component={NotasScreen} options={{ title: 'Notas' }} />
             <Stack.Screen name="Boletines" component={BoletinesScreen} options={{ title: 'Boletines' }} />
             <Stack.Screen name="Asistencia" component={AsistenciaScreen} options={{ title: 'Asistencia' }} />
+            <Stack.Screen name="AvisosPago" component={AvisosPagoScreen} options={{ title: 'Avisos de pago' }} />
+            <Stack.Screen name="Pagos" component={PagosScreen} options={{ title: 'Pensiones y pagos' }} />
             <Stack.Screen name="Comunicados" component={ComunicadosScreen} options={{ title: 'Comunicados' }} />
             <Stack.Screen name="ComunicadoDetalle" component={ComunicadoDetalleScreen} options={{ title: 'Comunicado' }} getId={({ params }) => String(params.id)} />
             <Stack.Screen name="Notificaciones" component={NotificacionesScreen} options={{ title: 'Alertas' }} />
