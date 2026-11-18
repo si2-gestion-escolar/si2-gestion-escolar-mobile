@@ -13,7 +13,7 @@ export default function LoginScreen() {
 
   const entrar = async () => {
     if (!identificador.trim() || !password) {
-      setError('Complete usuario y contrase\u00f1a.')
+      setError('Complete usuario y contraseña.')
       return
     }
     setCargando(true)
@@ -23,19 +23,19 @@ export default function LoginScreen() {
     } catch (cause) {
       if (isAxiosError(cause)) {
         if (!cause.response) {
-          setError('No se pudo conectar con el servidor. Verifique su conexi\u00f3n e intente nuevamente.')
+          setError('No se pudo conectar con el servidor. Verifique su conexión e intente nuevamente.')
         } else if (cause.response.status === 401) {
-          setError('Usuario o contrase\u00f1a incorrectos.')
+          setError('Usuario o contraseña incorrectos.')
         } else if (cause.response.status === 400) {
           const data = cause.response.data as { error?: string; detail?: string }
-          setError(data?.error ?? data?.detail ?? 'Revise los datos ingresados e int\u00e9ntelo nuevamente.')
+          setError(data?.error ?? data?.detail ?? 'Revise los datos ingresados e inténtelo nuevamente.')
         } else if (cause.response.status === 403) {
-          setError('El servidor rechaz\u00f3 la solicitud de inicio de sesi\u00f3n.')
+          setError('El servidor rechazó la solicitud de inicio de sesión.')
         } else {
-          setError(`El servidor respondi\u00f3 con un error (${cause.response.status}). Int\u00e9ntelo nuevamente m\u00e1s tarde.`)
+          setError(`El servidor respondió con un error (${cause.response.status}). Inténtelo nuevamente más tarde.`)
         }
       } else {
-        setError('No se pudo completar el inicio de sesi\u00f3n. Int\u00e9ntelo nuevamente.')
+        setError('No se pudo completar el inicio de sesión. Inténtelo nuevamente.')
       }
     } finally {
       setCargando(false)
@@ -44,7 +44,7 @@ export default function LoginScreen() {
 
   return (
     <View style={estilos.contenedor}>
-      <Text style={estilos.titulo}>EduGesti\u00f3n Cloud</Text>
+      <Text style={estilos.titulo}>EduGestión Cloud</Text>
       <Text style={estilos.subtitulo}>Portal de tutores y estudiantes</Text>
 
       <TextInput
@@ -61,7 +61,7 @@ export default function LoginScreen() {
       <View style={estilos.passwordContenedor}>
         <TextInput
           style={[estilos.campo, estilos.campoPassword]}
-          placeholder="Contrase\u00f1a"
+          placeholder="Contraseña"
           placeholderTextColor="#64748b"
           autoCapitalize="none"
           autoCorrect={false}
@@ -69,11 +69,11 @@ export default function LoginScreen() {
           value={password}
           onChangeText={setPassword}
           editable={!cargando}
-          accessibilityLabel="Contrase\u00f1a"
+          accessibilityLabel="Contraseña"
         />
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={mostrarPassword ? 'Ocultar contrase\u00f1a' : 'Mostrar contrase\u00f1a'}
+          accessibilityLabel={mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
           accessibilityState={{ selected: mostrarPassword }}
           hitSlop={10}
           style={estilos.botonVisibilidad}
